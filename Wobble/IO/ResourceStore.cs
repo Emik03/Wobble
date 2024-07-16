@@ -113,6 +113,9 @@ namespace Wobble.IO
             if (name is null)
                 return default;
 
+            if (name.StartsWith("Quaver.Resources") && typeof(T) == typeof(byte[]))
+                return (T)(object)File.ReadAllBytes($"/home/emik/RiderProjects/Quarantine/QuaverGame/Quaver.Resources/{name}");
+
             var filenames = GetFilenames(name);
 
             // Cache miss - get the resource
@@ -131,6 +134,9 @@ namespace Wobble.IO
 
         public Stream GetStream(string name)
         {
+            if (name.StartsWith("Quaver.Resources"))
+                return File.Open($"/home/emik/RiderProjects/Quarantine/QuaverGame/Quaver.Resources/{name}", FileMode.Open);
+
             var filenames = GetFilenames(name);
 
             // Cache miss - get the resource
