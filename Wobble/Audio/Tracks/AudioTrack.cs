@@ -254,6 +254,7 @@ namespace Wobble.Audio.Tracks
             var flags = preview ? 0 : BassFlags.Decode | BassFlags.Prescan;
 
             Stream = Bass.CreateStream(byteArrayData, 0, data.Length, flags);
+
             AfterLoad();
         }
 
@@ -272,6 +273,7 @@ namespace Wobble.Audio.Tracks
 
             var flags = preview ? 0 : BassFlags.Decode | BassFlags.Prescan;
             Stream = Bass.CreateStream(uri.ToString(), 0, flags, null);
+
             AfterLoad();
         }
 
@@ -422,7 +424,10 @@ namespace Wobble.Audio.Tracks
 
             if (!IsPreview)
             {
-                Stream = BassFx.TempoCreate(Stream, BassFlags.FxFreeSource);
+                var stream = BassFx.TempoCreate(Stream, BassFlags.FxFreeSource);
+
+                if (stream != 0)
+                    Stream = stream;
 
                 // Settings from osu-framework. With default settings there's a huge offset on rates below 1.
                 // With these settings there's still an offset on rates below 1, but it's not as bad (just like HT in osu!).
